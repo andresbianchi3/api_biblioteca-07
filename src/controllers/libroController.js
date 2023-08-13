@@ -1,11 +1,16 @@
 const Libro = require("../models/libroModel");
 
+function handleError(res, error, message) {
+  console.error(error);
+  res.status(500).json({ error: message });
+}
+
 exports.getAllLibros = async (req, res) => {
   try {
     const libros = await Libro.find();
     res.status(200).json(libros);
   } catch (error) {
-    res.status(500).json({ error: "Error al obtener los libros" });
+    handleError(res, error, "Error al obtener los libros");
   }
 };
 
@@ -17,7 +22,7 @@ exports.getLibroById = async (req, res) => {
     }
     res.status(200).json(libro);
   } catch (error) {
-    res.status(500).json({ error: "Error al obtener el Libro" });
+    handleError(res, error, "Error al obtener el Libro");
   }
 };
 
@@ -25,11 +30,12 @@ exports.createLibro = async (req, res) => {
   try {
     const nuevoLibro = await Libro.create(req.body);
     await nuevoLibro.save();
-    res.status(201).json(nuevoLibro);
+    res.status(201).json({ message: "Libro creado exitosamente", libro: nuevoLibro });
   } catch (error) {
-    res.status(500).json({ error: "Error al crear el Libro" });
+    handleError(res, error, "Error al crear el Libro");
   }
 };
+
 
 exports.updateLibro = async (req, res) => {
   try {
@@ -43,7 +49,7 @@ exports.updateLibro = async (req, res) => {
 
     res.status(200).json(libro);
   } catch (error) {
-    res.status(500).json({ error: "Error al actualizar el Libro" });
+    handleError(res, error, "Error al actualizar el Libro");
   }
 };
 
@@ -55,6 +61,6 @@ exports.deleteLibro = async (req, res) => {
 
     res.status(200).json(libroEliminado);
   } catch (error) {
-    res.status(500).json({ error: "Error al eliminar el Libro" });
+    handleError(res, error, "Error al eliminar el Libro");
   }
 };

@@ -1,14 +1,19 @@
 const mongoose = require('mongoose');
-require('dotenv').config(); //SE NECESITA PARA QUE MONGO_DB SEA LEIDO DEL ARCHIVO .ENV
+require('dotenv').config();
 
 mongoose.connect(process.env.MONGO_DB, {
   useUnifiedTopology: true,
   useNewUrlParser: true,
 });
 
+// ... resto del código ...
+
+
 const LibroSchema = new mongoose.Schema({
   titulo: String,
-  autor: String
+  autor: String,
+  anioPublicacion: Number,
+  genero: String
 }, { collection: 'libros' });
 
 const Libro = mongoose.model('Libro', LibroSchema);
